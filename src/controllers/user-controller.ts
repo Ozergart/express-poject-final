@@ -38,6 +38,17 @@ class UserController {
       next(e);
     }
   }
+  public async AdminSetRole(req: Request, res: Response, next: NextFunction) {
+    try {
+      const userId = req.params.userId;
+      const role = req.body.role;
+      const user = await userService.AdminSetRole(userId, role);
+      const result = userPresenter.toResponse(user);
+      res.status(200).json(result);
+    } catch (e) {
+      next(e);
+    }
+  }
   public async getMe(req: Request, res: Response, next: NextFunction) {
     try {
       const userId = req.res.locals.tokenPayload.userId;

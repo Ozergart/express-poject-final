@@ -7,12 +7,15 @@ import { ITokenPair, ITokenPayload } from "../interfaces/IToket";
 
 class TokenService {
   public generateTokens(payload: ITokenPayload): ITokenPair {
-    const expiresIn = "7D";
+    const AccessExpiresIn = "1h";
+    const RefreshExpiresIn = "2w";
+    // const aexpires = config.ACCESS_TOKEN_EXPIRES_IN;
+    // const rexpires = config.REFRESH_TOKEN_EXPIRES_IN;
     const accessToken = jwt.sign(payload, config.ACCESS_TOKEN_SECRET, {
-      expiresIn,
+      expiresIn: AccessExpiresIn,
     });
     const refreshToken = jwt.sign(payload, config.REFRESH_TOKEN_SECRET, {
-      expiresIn,
+      expiresIn: RefreshExpiresIn,
     });
     return {
       accessToken,

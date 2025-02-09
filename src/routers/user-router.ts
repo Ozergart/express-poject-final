@@ -28,6 +28,13 @@ router.get(
   authMiddleware.checkAccessToken,
   userController.getUserById,
 );
+router.patch(
+  "/adminAccess/:userId/setRole",
+  commonMiddleware.isIdValid("userId"),
+  authMiddleware.checkAccessToken,
+  accessMiddleware.checkAdminAccess,
+  userController.AdminSetRole,
+);
 router.delete(
   "/adminAccess/:userId",
   commonMiddleware.isIdValid("userId"),

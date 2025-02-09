@@ -1,3 +1,4 @@
+import { RoleEnum } from "../enums/user-role-enum";
 import { ApiError } from "../errors/api-error";
 import { IUser, IUserListQuery, IUserUpdate } from "../interfaces/IUser";
 import { userRepository } from "../repositories/user-repository";
@@ -35,6 +36,9 @@ class UserService {
   }
   public async updateMe(id: string, data: IUserUpdate): Promise<IUser> {
     return await userRepository.updateById(id, data);
+  }
+  public async AdminSetRole(id: string, role: RoleEnum): Promise<IUser> {
+    return await userRepository.AdminSetRole(id, role);
   }
   public async isEmailUnique(email: string): Promise<void> {
     const user = await userRepository.getByEmail(email);

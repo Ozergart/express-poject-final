@@ -36,7 +36,7 @@ export class userValidator {
   public static queryGetUsers = joi.object({
     search: joi.string().trim(),
     page: joi.number().min(1).default(1),
-    usersForOnePage: joi.number().min(1).max(100).default(20),
+    usersForOnePage: joi.number().min(1).max(200).default(20),
     order: joi
       .string()
       .valid(...Object.values(orderEnum))

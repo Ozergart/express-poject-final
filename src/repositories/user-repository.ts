@@ -1,12 +1,13 @@
 import { FilterQuery } from "mongoose";
 
+import { RoleEnum } from "../enums/user-role-enum";
 import {
   IUser,
   IUserCreate,
   IUserListQuery,
   IUserUpdate,
 } from "../interfaces/IUser";
-import { User } from "../models/user-model";
+import { User } from "../models/userModel";
 
 class UserRepository {
   public async getList(query: IUserListQuery): Promise<{
@@ -17,8 +18,6 @@ class UserRepository {
     const page = +query.page;
     const usersForOnePage = +query.usersForOnePage;
     const skip = (page - 1) * usersForOnePage;
-    const totalPages =
-      ((await User.countDocuments()) + usersForOnePage - 1) / usersForOnePage;
 
     const sortOrder: 1 | -1 = query.order === "asc" ? 1 : -1;
     const sortObj = { [query.orderBy]: sortOrder };
@@ -30,6 +29,8 @@ class UserRepository {
         { email: { $regex: query.search, $options: "i" } },
       ];
     }
+    const totalDocuments = await User.countDocuments(filterObj);
+    const totalPages = Math.ceil(totalDocuments / usersForOnePage);
 
     const users = await User.find(filterObj)
       .sort(sortObj)
@@ -42,6 +43,13 @@ class UserRepository {
   }
   public async updateById(id: string, dto: IUserUpdate): Promise<IUser> {
     return await User.findByIdAndUpdate(id, dto, { returnDocument: "after" });
+  }
+  public async AdminSetRole(id: string, role: RoleEnum): Promise<IUser> {
+    return await User.findByIdAndUpdate(
+      id,
+      { role },
+      { returnDocument: "after" },
+    );
   }
   public async getByEmail(email: string): Promise<IUser> {
     return await User.findOne({ email });

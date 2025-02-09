@@ -6,3 +6,8 @@ export enum orderByEnum {
   IS_VERIFIED = "isVerified",
   EMAIL = "email",
 }
+export enum orderByEnumPosts {
+  TITLE = "title",
+  CREATED_AT = "createdAt",
+  UPDATED_AT = "updatedAt",
+}

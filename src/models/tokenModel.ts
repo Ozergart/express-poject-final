@@ -1,7 +1,7 @@
 import { model, Schema } from "mongoose";
 
 import { IToken } from "../interfaces/IToket";
-import { User } from "./user-model";
+import { User } from "./userModel";
 
 const tokenSchema = new Schema(
   {
