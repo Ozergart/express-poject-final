@@ -8,13 +8,19 @@ import { postValidator } from "../validators/postValidator";
 const router = Router();
 
 router.post(
+  "/:postId/like",
+  authMiddleware.checkAccessToken,
+  commonMiddleware.isIdValid("postId"),
+  postController.likePost,
+);
+router.post(
   "/",
   authMiddleware.checkAccessToken,
   commonMiddleware.validateBody(postValidator.postCreate),
   postController.create,
 );
 router.get(
-  "/:userId",
+  "/user/:userId",
   commonMiddleware.isIdValid("userId"),
   commonMiddleware.validateQuery(postValidator.queryGetPosts),
   postController.getPostsByUserId,

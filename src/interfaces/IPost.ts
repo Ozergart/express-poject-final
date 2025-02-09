@@ -1,11 +1,21 @@
 import { orderByEnumPosts } from "../enums/orderByEnums";
 import { orderEnum } from "../enums/orderEnum";
+import { IUserResponse } from "./IUser";
 
 export interface IPost {
   _id: string;
   userId: string;
   title: string;
   text: string;
+  likes: number;
+  createdAt: Date;
+  updatedAt: Date;
+}
+export interface IPostWithoutUserId {
+  _id: string;
+  title: string;
+  text: string;
+  likes: number;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -20,7 +30,8 @@ export interface IPostUpdate {
 }
 
 export interface IPostResponseList {
-  posts: IPost[];
+  user: IUserResponse;
+  posts: IPostWithoutUserId[];
   totalPages: number;
   page: number;
 }
@@ -31,3 +42,12 @@ export type IPostListQuery = {
   order: orderEnum;
   orderBy: orderByEnumPosts;
 };
+export interface IPostLike {
+  _id: string;
+  postId: string;
+  userId: string;
+}
+export interface IPostLikeSearch {
+  postId: string;
+  userId: string;
+}

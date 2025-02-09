@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 
 import { IPostListQuery, IPostUpdate } from "../interfaces/IPost";
+import { postPresenter } from "../presenters/postPresenter";
 import { postService } from "../services/post-service";
 
 class PostController {
@@ -12,7 +13,14 @@ class PostController {
     try {
       const userId = req.params.userId;
       const query = req.query as unknown as IPostListQuery;
-      const result = await postService.getPostsByUserId(userId, query);
+      const { user, posts, totalPages, page } =
+        await postService.getPostsByUserId(userId, query);
+      const result = postPresenter.toResponseList(
+        user,
+        posts,
+        totalPages,
+        page,
+      );
       res.json(result);
     } catch (e) {
       next(e);
@@ -51,6 +59,16 @@ class PostController {
       const dto = req.body as IPostUpdate;
       const postId = req.params.postId;
       const post = await postService.updateMyPostById(userId, postId, dto);
+      res.json(post);
+    } catch (e) {
+      next(e);
+    }
+  }
+  public async likePost(req: Request, res: Response, next: NextFunction) {
+    try {
+      const userId = req.res.locals.tokenPayload.userId;
+      const postId = req.params.postId;
+      const post = await postService.likePost(userId, postId);
       res.json(post);
     } catch (e) {
       next(e);

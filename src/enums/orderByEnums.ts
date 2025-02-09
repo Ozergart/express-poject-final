@@ -8,6 +8,7 @@ export enum orderByEnum {
 }
 export enum orderByEnumPosts {
   TITLE = "title",
+  LIKES = "likes",
   CREATED_AT = "createdAt",
   UPDATED_AT = "updatedAt",
 }

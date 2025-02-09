@@ -55,5 +55,23 @@ class PostRepository {
   ): Promise<IPost> {
     return await Posts.findByIdAndUpdate(postId, dto, { new: true });
   }
+  public async likePost(postId: string) {
+    const post = await Posts.findById(postId);
+    const likes = post.likes;
+    return await Posts.findByIdAndUpdate(
+      postId,
+      { likes: likes + 1 },
+      { new: true },
+    );
+  }
+  public async removeLikePost(postId: string) {
+    const post = await Posts.findById(postId);
+    const likes = post.likes;
+    return await Posts.findByIdAndUpdate(
+      postId,
+      { likes: likes - 1 },
+      { new: true },
+    );
+  }
 }
 export const postRepository = new PostRepository();
