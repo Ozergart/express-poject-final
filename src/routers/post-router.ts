@@ -20,6 +20,11 @@ router.post(
   postController.create,
 );
 router.get(
+  "/",
+  commonMiddleware.validateQuery(postValidator.queryGetPosts),
+  postController.getPosts,
+);
+router.get(
   "/user/:userId",
   commonMiddleware.isIdValid("userId"),
   commonMiddleware.validateQuery(postValidator.queryGetPosts),

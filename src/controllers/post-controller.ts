@@ -26,6 +26,15 @@ class PostController {
       next(e);
     }
   }
+  public async getPosts(req: Request, res: Response, next: NextFunction) {
+    try {
+      const query = req.query as unknown as IPostListQuery;
+      const result = await postService.getPosts(query);
+      res.json(result);
+    } catch (e) {
+      next(e);
+    }
+  }
   public async getPostById(req: Request, res: Response, next: NextFunction) {
     try {
       const postId = req.params.postId;

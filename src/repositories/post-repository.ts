@@ -40,6 +40,31 @@ class PostRepository {
       .skip(skip);
     return { posts, totalPages, page };
   }
+  public async getPosts(query: IPostListQuery): Promise<{
+    posts: IPost[];
+    totalPages: number;
+    page: number;
+  }> {
+    const page = +query.page;
+    const postsForOnePage = +query.postsForOnePage;
+    const skip = (page - 1) * postsForOnePage;
+
+    const sortOrder: 1 | -1 = query.order === "asc" ? 1 : -1;
+    const sortObj = { [query.orderBy]: sortOrder };
+
+    const filterObj: FilterQuery<IPost> = {};
+    if (query.search) {
+      filterObj.title = { $regex: query.search, $options: "i" };
+    }
+    const totalDocuments = await Posts.countDocuments(filterObj);
+    const totalPages = Math.ceil(totalDocuments / postsForOnePage);
+
+    const posts = await Posts.find(filterObj)
+      .sort(sortObj)
+      .limit(postsForOnePage)
+      .skip(skip);
+    return { posts, totalPages, page };
+  }
   public async create(dto: IPostCreate): Promise<IPost> {
     return await Posts.create(dto);
   }

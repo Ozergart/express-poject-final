@@ -24,6 +24,13 @@ class PostService {
     const list = await postRepository.getPostsByUserId(userId, query);
     return { user, ...list };
   }
+  public async getPosts(query: IPostListQuery): Promise<{
+    posts: IPost[];
+    totalPages: number;
+    page: number;
+  }> {
+    return await postRepository.getPosts(query);
+  }
   public async getPostById(userId: string): Promise<IPost> {
     const post = await postRepository.getPostById(userId);
     if (!post) {
